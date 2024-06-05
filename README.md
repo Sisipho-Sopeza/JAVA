@@ -569,7 +569,9 @@ Creating records is as easy as creating classes. For our "account" example, you'
 
 Records are fantastic for managing simple objects that you set up once and access later in your code. They're often referred to as POJOs, or Plain Old Java Objects. In essence, records offer a streamlined way to simplify code for basic objects.
 
-#  Inheritance Simplified
+### WEEK 2
+
+#  Inheritance
 
 **Inheritance Overview**
 
