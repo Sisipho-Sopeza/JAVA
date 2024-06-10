@@ -1278,7 +1278,807 @@ When writing code, it's common to encounter various errors, and we need to handl
 These methods help ensure our code remains robust and resilient to errors, whether they are related like a family, require individual treatment, or cause similar problems.
 
 
-# 
+# WEEK 3
+
+# Streams and Lambda Expressions in Java
+
+**Functional Programming in Java**
+
+Functional Programming (FP) is a paradigm that treats computations as the evaluation of mathematical functions and avoids changing-state and mutable data. FP focuses on higher-order functions, immutability, and avoiding side effects. Java, starting from version 8, embraces FP concepts through features like Lambda Expressions, method references, and the Stream API.
+
+**Benefits of Functional Programming**
+
+1. **Improved Code Comprehension and Debugging**:
+   - Working with immutable data and avoiding state changes results in more predictable code.
+   - This predictability makes the code easier to understand and debug.
+
+2. **Enhanced Modularity**:
+   - Encourages composing smaller, reusable functions into complex operations.
+   - This modularity makes code more maintainable and scalable.
+
+3. **Better Concurrency**:
+   - Eliminates issues related to multiple states, which simplifies writing concurrent and parallel code.
+   - Reduces the risk of side effects in other threads.
+
+**Lambda Expressions in Java**
+
+Lambda expressions provide a clear and concise way to represent a method interface using an expression. They enable treating functionality as a method argument, or treating code as data.
+
+**Syntax of Lambda Expressions**:
+```java
+(parameters) -> expression
+```
+or
+```java
+(parameters) -> { statements; }
+```
+
+**Example**:
+```java
+// Traditional way using an anonymous class
+Runnable r1 = new Runnable() {
+    @Override
+    public void run() {
+        System.out.println("Hello, world!");
+    }
+};
+
+// Using a lambda expression
+Runnable r2 = () -> System.out.println("Hello, world!");
+```
+
+**Stream API**
+
+The Stream API in Java provides a powerful way to process sequences of elements in a functional style. It allows for complex data processing queries to be written in a declarative manner.
+
+**Common Stream Operations**:
+
+1. **Creating a Stream**:
+   ```java
+   List<String> myList = Arrays.asList("a1", "a2", "b1", "c2", "c1");
+   Stream<String> myStream = myList.stream();
+   ```
+
+2. **Intermediate Operations**:
+   - `filter`: Filters elements based on a condition.
+   - `map`: Transforms each element.
+   - `sorted`: Sorts the elements.
+
+   Example:
+   ```java
+   myStream
+       .filter(s -> s.startsWith("c"))
+       .map(String::toUpperCase)
+       .sorted()
+       .forEach(System.out::println);
+   ```
+
+3. **Terminal Operations**:
+   - `forEach`: Performs an action for each element.
+   - `collect`: Converts the stream to a collection.
+   - `reduce`: Reduces the elements to a single result.
+
+   Example:
+   ```java
+   List<String> filteredList = myList.stream()
+       .filter(s -> s.startsWith("c"))
+       .collect(Collectors.toList());
+   ```
+
+By using Lambda Expressions and the Stream API, you can leverage the power of functional programming in Java to write more concise, readable, and maintainable code. These features simplify handling collections, parallel processing, and encourage a more functional approach to problem-solving.
+
+# Lambda Expressions Simplified
+
+Lambda expressions are a key part of functional programming in Java. They are concise, anonymous functions used to implement functional interfaces—interfaces with a single abstract method. Lambda expressions have a simple syntax with three parts:
+
+1. **Parameter List**: Enclosed in parentheses. Parentheses can be omitted if there is only one parameter.
+2. **Arrow Token (->)**: Separates parameters from the body.
+3. **Body**: Can be a single expression or a block of code in curly braces.
+
+**Example Syntax**:
+```java
+(parameters) -> expression
+// or
+(parameters) -> { statements; }
+```
+
+**Example**:
+A lambda expression that adds two integers:
+```java
+(int a, int b) -> a + b
+```
+
+Lambda expressions require a functional interface to work. Here’s an example using the built-in `Predicate` functional interface, which has a single abstract method `test` that returns a Boolean.
+
+**Predicate Example**:
+```java
+Predicate<String> isLongerThanFive = s -> s.length() > 5;
+```
+This lambda expression checks if a string has more than five characters.
+
+**Consumer Example**:
+The `Consumer` interface takes a parameter and returns nothing, useful for actions like printing.
+```java
+Consumer<String> print = s -> System.out.println(s);
+```
+
+**Dynamic Lambdas**:
+Lambda expressions can be assigned to variables, making the code flexible. Here’s an example:
+```java
+Function<Integer, Integer> square = x -> x * x;
+```
+
+**Method References**:
+A shorthand for lambda expressions used to refer to existing methods. For example:
+```java
+Consumer<String> print = System.out::println;
+```
+
+**Combining with Stream API**:
+Lambda expressions and method references become powerful when used with the Stream API for data processing. We will explore this further in the next section.
+
+By using lambda expressions, you can write more concise, readable, and flexible code in Java.
+
+# Streams API and Handling Data Sets
+
+The Stream API provides an efficient way to process data sets in Java using functional programming principles. Streams allow you to handle sequences of elements, either sequentially or in parallel, sourced from collections, arrays, or I/O channels.
+
+**Creating Streams**:
+- **From Collections**: `collection.stream()`
+- **From Arrays**: `Arrays.stream(array)`
+- **From Static Methods**: `Stream.of(elements...)`
+
+**Stream Operations**:
+
+**1. Intermediate Operations**:
+   - **filter**: Filters elements based on a condition.
+     ```java
+     stream.filter(element -> condition)
+     ```
+   - **map**: Transforms each element.
+     ```java
+     stream.map(element -> transformFunction)
+     ```
+   - **flatMap**: Flattens nested streams.
+     ```java
+     stream.flatMap(element -> streamOfElements)
+     ```
+   These operations are lazy and are only executed when a terminal operation is called.
+
+**2. Terminal Operations**:
+   - **forEach**: Applies an action to each element.
+     ```java
+     stream.forEach(element -> action)
+     ```
+   - **collect**: Gathers elements into a collection.
+     ```java
+     List<String> result = stream.collect(Collectors.toList());
+     ```
+   - **reduce**: Reduces the stream to a single value.
+     ```java
+     Optional<Type> result = stream.reduce((element1, element2) -> combineFunction);
+     ```
+
+**Example**:
+Using IntelliJ, we can filter names starting with "A", transform them to uppercase, and store the results in a list:
+```java
+List<String> names = Arrays.asList("Alice", "Bob", "Alex", "John");
+List<String> filteredNames = names.stream()
+                                  .filter(name -> name.startsWith("A"))
+                                  .map(String::toUpperCase)
+                                  .collect(Collectors.toList());
+```
+This approach, following functional programming principles, makes the code more readable and maintainable.
+
+
+# Generics and Collections
+
+**Collection Framework Overview**
+
+The Java Collection Framework provides various tools to manage groups of items, including key interfaces and implementation classes for different types of collections.
+
+**Main Interfaces**:
+- **List**: An ordered collection that allows duplicates.
+- **Set**: A collection that disallows duplicates.
+- **Queue**: Handles elements in a FIFO (First-In-First-Out) manner.
+- **Map**: A collection of key-value pairs, not fitting into the Collection interface.
+
+**Key Interfaces and Implementations**:
+
+1. **List**:
+   - **ArrayList**: A resizable array-based list.
+   - **LinkedList**: A doubly linked list.
+
+2. **Set**:
+   - **HashSet**: Uses a hash table for storage.
+   - **TreeSet**: A balanced binary tree.
+
+3. **Map**:
+   - **HashMap**: Uses a hash table for key-value pairs.
+   - **TreeMap**: A balanced binary tree for key-value pairs.
+
+**Example: Using ArrayList**
+
+Creating and manipulating an `ArrayList`:
+```java
+List<String> list = new ArrayList<>();  // Creating an ArrayList
+list.add("Alice");                      // Adding elements
+list.add("Bob");
+list.add("Charlie");
+list.remove("Alice");                   // Removing an element
+System.out.println(list);               // Printing the list
+```
+In this example:
+- We declare an `ArrayList` of `String` type.
+- We add elements to the list.
+- We remove an element from the list.
+- We print the contents of the list.
+
+**Generics**:
+Using generics (like `<String>` in the example) ensures type safety by allowing the compiler to catch type errors, preventing runtime issues
+
+
+# The Role of Generics
+
+Generics in Java bring several significant advantages over pre-generic collections, primarily by ensuring type safety and enhancing code reusability.
+
+**Before Generics**:
+- Collections could only hold objects of type `Object`.
+- Casting was necessary to retrieve the correct type.
+- Incorrect casting led to runtime errors.
+
+**With Generics**:
+Generics allow you to specify the type of objects a collection can hold at compile time, offering several benefits:
+
+1. **Type Safety**:
+   - Catch type-related errors during compilation instead of at runtime.
+   - Prevents adding incorrect types to collections.
+
+2. **Reusability**:
+   - Generic classes and interfaces work with various types.
+   - Reduces code duplication and increases code cleanliness.
+
+**Example**:
+
+A generic list of integers ensures only integers can be added:
+```java
+List<Integer> intList = new ArrayList<>();
+intList.add(1);
+intList.add(2);
+intList.add(3);
+
+// This line would cause a compile-time error
+// intList.add("hello");
+
+int sum = 0;
+for (int number : intList) {
+    sum += number;
+}
+System.out.println("Sum: " + sum);  // Output: Sum: 6
+```
+In this example:
+- The list `intList` is declared to hold `Integer` objects.
+- Adding non-integer objects (like `"hello"`) is caught at compile time.
+- The compiler ensures all operations on `intList` involve integers.
+
+Generics ensure your code is safer and more efficient by catching type errors early and allowing for flexible, reusable code structures.
+
+
+# Parameterized Types
+
+**Parameterized Types**:
+Parameterized types involve classes that use generics. These types make your code more flexible and type-safe.
+
+**Creating a Generic Class**:
+To create a generic class, define type parameters within angle brackets in the class declaration. These type parameters are placeholders for actual types when you create instances of the class.
+
+**Example Without Generics**:
+Without generics, you'd need separate classes for different types, such as `StringPair` and `IntegerPair`, or use `Object` type, which is not type-safe.
+
+**Using Generics**:
+Generics solve this problem by allowing you to define a class that can handle any type. 
+
+**Example of a Generic Class**:
+Here’s a generic `Pair` class:
+```java
+public class Pair<T> {
+    private T first;
+    private T second;
+
+    public Pair(T first, T second) {
+        this.first = first;
+        this.second = second;
+    }
+
+    public T getFirst() { return first; }
+    public T getSecond() { return second; }
+}
+```
+In this class, `T` is a placeholder for the type that will be specified when creating an instance.
+
+**Using the Generic Class**:
+When you create instances of the `Pair` class, you specify the actual type arguments:
+```java
+Pair<String> stringPair = new Pair<>("Hello", "World");
+Pair<Integer> integerPair = new Pair<>(1, 2);
+```
+In these instances:
+- `stringPair` is a `Pair` of `String`.
+- `integerPair` is a `Pair` of `Integer`.
+
+Generics allow you to create flexible, reusable classes that ensure type safety without needing casts. This makes the code easier to read and maintain. Now you can create and use parameterized types in your classes, leveraging the full power of Java generics.
+
+
+# Annotations and Reflection
+
+**Introduction to Annotations**:
+Annotations are tags you attach to Java classes, methods, or fields to add extra information or modify behavior.
+
+**Uses of Annotations**:
+- Generate code
+- Enforce coding standards
+- Provide hints to tools and frameworks
+
+**Common Built-In Annotations**:
+- **@Override**: Indicates a method overrides a superclass method.
+- **@Deprecated**: Marks a method as outdated and advises against its use.
+- **@SuppressWarnings**: Instructs the compiler to ignore specific warnings.
+
+**Example**:
+```java
+public class Student {
+    @Override
+    public String toString() {
+        return "Student{}";
+    }
+
+    @Deprecated
+    public void oldMethod() {
+        // Deprecated method
+    }
+
+    @SuppressWarnings("unchecked")
+    public void methodWithWarnings() {
+        // Code with warnings suppressed
+    }
+}
+```
+In this `Student` class:
+- **@Override** modifies the `toString` method.
+- **@Deprecated** marks `oldMethod` as outdated.
+- **@SuppressWarnings** tells the compiler to ignore warnings in `methodWithWarnings`.
+
+**Framework Usage**:
+Frameworks like Spring Boot and Quarkus heavily use annotations for configuration and functionality.
+
+**Creating Custom Annotations**:
+You can define your own annotations to add custom metadata and behavior to your code.
+
+Annotations add metadata to your code, enhancing its functionality and behavior during compile time or runtime. They are powerful tools for both built-in and custom applications.
+
+# Annotations and Reflection
+
+**Introduction to Annotations**:
+Annotations are tags added to Java classes, methods, or fields to provide extra information or modify behavior.
+
+**Uses of Annotations**:
+- Generate code
+- Enforce coding standards
+- Provide hints to tools and frameworks
+
+**Common Built-In Annotations**:
+- **@Override**: Indicates a method overrides a superclass method.
+- **@Deprecated**: Marks a method as outdated.
+- **@SuppressWarnings**: Instructs the compiler to ignore specific warnings.
+
+**Example**:
+```java
+public class Student {
+    @Override
+    public String toString() {
+        return "Student{}";
+    }
+
+    @Deprecated
+    public void oldMethod() {
+        // Deprecated method
+    }
+
+    @SuppressWarnings("unchecked")
+    public void methodWithWarnings() {
+        // Code with warnings suppressed
+    }
+}
+```
+In this `Student` class:
+- **@Override** modifies the `toString` method.
+- **@Deprecated** marks `oldMethod` as outdated.
+- **@SuppressWarnings** tells the compiler to ignore warnings in `methodWithWarnings`.
+
+**Framework Usage**:
+Frameworks like Spring Boot and Quarkus use annotations for configuration and functionality.
+
+**Creating Custom Annotations**:
+You can create custom annotations to add specific metadata and behavior to your code.
+
+Annotations enhance code by adding metadata, improving functionality, and guiding behavior during compile time or runtime.
+
+# Reflection API for Dynamic Code Manipulation
+
+The Reflection API in Java lets you inspect and modify code while it’s running. It’s particularly powerful when used with custom annotations. 
+
+**What is Reflection?**:
+Reflection allows you to explore and manipulate a class’s structure (methods, fields, annotations) at runtime. 
+
+**Using Reflection with Annotations**:
+Imagine we have a custom annotation, and we want to inspect it using reflection.
+
+**Example Steps**:
+1. **Get Class Object**: Obtain the class object for `info` which has our custom annotation.
+2. **Check for Annotation**: Check if the class has our custom annotation.
+3. **Print Annotation Details**: If the annotation is present, print its values.
+4. **Inspect Methods**: Loop through all methods in the class to check for the annotation and print its values.
+
+**Example Code**:
+```java
+Class<?> clazz = info.class;
+
+if (clazz.isAnnotationPresent(MyCustomAnnotation.class)) {
+    MyCustomAnnotation annotation = clazz.getAnnotation(MyCustomAnnotation.class);
+    System.out.println("Class Priority: " + annotation.priority());
+    System.out.println("Class Tags: " + Arrays.toString(annotation.tags()));
+}
+
+for (Method method : clazz.getDeclaredMethods()) {
+    if (method.isAnnotationPresent(MyCustomAnnotation.class)) {
+        MyCustomAnnotation annotation = method.getAnnotation(MyCustomAnnotation.class);
+        System.out.println("Method Name: " + method.getName());
+        System.out.println("Method Priority: " + annotation.priority());
+        System.out.println("Method Tags: " + Arrays.toString(annotation.tags()));
+    }
+}
+```
+In this code:
+- We check the class and its methods for the custom annotation.
+- Print the priority and tags values from the annotation.
+
+**Reflection API Benefits**:
+- **Dynamic Code Generation**: Create and modify instances, call methods, and access fields at runtime.
+- **Dependency Injection**: Inject dependencies dynamically.
+- **Runtime Configuration**: Adjust behavior based on runtime conditions.
+
+**Cautions**:
+- **Performance Overhead**: Reflection can slow down your program.
+- **Security Risks**: Improper use of reflection can introduce security vulnerabilities.
+
+Reflection combined with annotations allows for dynamic, powerful code manipulation but should be used carefully to avoid performance and security issues.
+
+
+# Multithreading and Concurrency
+
+Let's explore custom annotations and dynamic code manipulation.
+
+**Steps**:
+1. **Create a Custom Annotation**: Define `@Track` to mark methods.
+2. **Implement a Class**: Add methods marked with `@Track`.
+3. **Use Reflection**: Identify and print the names of methods with `@Track`.
+4. **Bonus**: Track method execution time.
+
+**Step 1: Create @Track Annotation**:
+```java
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Track {}
+```
+
+**Step 2: Implement a Class**:
+```java
+public class MyClass {
+    @Track
+    public void methodOne() {
+        // Method logic
+    }
+
+    @Track
+    public void methodTwo() {
+        // Method logic
+    }
+
+    public void methodThree() {
+        // Method logic
+    }
+}
+```
+
+**Step 3: Use Reflection**:
+```java
+import java.lang.reflect.Method;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        Class<?> clazz = MyClass.class;
+
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Track.class)) {
+                System.out.println("Tracked Method: " + method.getName());
+            }
+        }
+    }
+}
+```
+
+**Bonus: Track Execution Time**:
+```java
+public class Main {
+    public static void main(String[] args) throws Exception {
+        Class<?> clazz = MyClass.class;
+
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Track.class)) {
+                long startTime = System.nanoTime();
+                method.invoke(clazz.getDeclaredConstructor().newInstance());
+                long endTime = System.nanoTime();
+                System.out.println("Tracked Method: " + method.getName() + " executed in " + (endTime - startTime) + " ns");
+            }
+        }
+    }
+}
+```
+
+**Summary**:
+- **Define `@Track`**: Create a custom annotation.
+- **Mark Methods**: Use `@Track` on methods to be tracked.
+- **Use Reflection**: Identify and print tracked methods.
+- **Enhance**: Measure and print method execution time.
+
+Annotations and reflection allow dynamic programming, making your code more flexible and powerful. Ready, set, code!
+
+# Multithreading and Concurrency
+
+Great work, coding wizards! Let’s uncover our solution together. We've created a custom `@Track` annotation, marked methods with it, and used Reflection to identify and print the tracked methods. The bonus section showcases tracking method execution time. Annotations and Reflection add dynamism and strength to your code. Keep exploring!
+
+# Multithreading and Concurrency
+
+**Introduction to Concurrency and Multithreading**:
+
+Concurrency and multithreading are essential in programming, enhancing application efficiency and responsiveness.
+
+**Concurrency**:
+Concurrency involves managing multiple tasks simultaneously. It’s like juggling tasks at once.
+
+**Multithreading**:
+Multithreading achieves concurrency by running different threads simultaneously within a single process. Threads are lightweight, independent workers that share the same memory space.
+
+**Importance**:
+Concurrency and multithreading optimize system resources, resulting in faster and more responsive applications.
+
+**Example**:
+Imagine coming home to laundry, hungry kids, pizza, cleaning, and vacuuming. Without concurrency, you'd do these tasks one by one, taking ages. With concurrency, you can multitask efficiently, getting everything done much faster.
+
+**Java Support**:
+Java supports multithreading with the `Thread` class and `java.util.concurrent` package. You can create and manage threads in Java applications using these tools.
+
+**Example Code**:
+```java
+class MyRunnable implements Runnable {
+    public void run() {
+        System.out.println("Thread ID: " + Thread.currentThread().getId() + " is running.");
+    }
+}
+
+public class MultithreadingExample {
+    public static void main(String[] args) {
+        MyRunnable myRunnable = new MyRunnable();
+        Thread thread = new Thread(myRunnable);
+        thread.start();
+    }
+}
+```
+
+**Summary**:
+Concurrency and multithreading are crucial for building efficient and responsive Java applications. Understanding these concepts and leveraging Java’s support can significantly improve application performance.
+
+# Concurrency Concepts
+
+Java provides a toolbox of tools and APIs to handle concurrency and multithreading. Let’s explore some key concepts.
+
+1. **Thread and Runnable**:
+   - Use the `Thread` class and `Runnable` interface to manage threads.
+   - `Thread` extends `Object` and implements `Runnable`, offering methods for controlling threads.
+   - Example: In IntelliJ, see `MyThread` class extending `Thread`, demonstrating different threads in action.
+
+2. **Synchronization and Locks**:
+   - Ensure shared resources are accessed safely by multiple threads.
+   - Use synchronization, indicated by the `synchronized` keyword, to prevent concurrent access to resources.
+
+3. **java.util.concurrent Package**:
+   - Utilize the `Executor` framework in the `java.util.concurrent` package for simplified thread creation and management.
+   - Example: Create a fixed thread pool in IntelliJ and execute tasks concurrently.
+
+4. **Concurrent Collections**:
+   - Handle collections safely in multithreaded environments.
+   - Use concurrent collections in the `java.util.concurrent` package, such as `ConcurrentHashMap`, for safe manipulation by multiple threads.
+
+5. **Future and Callable**:
+   - Use the `Future` and `Callable` interfaces for handling delayed responses.
+   - `Callable` is similar to `Runnable` but can return a value.
+   - `Future` represents the result of a computation that may not be available immediately.
+   - Example: Use `ExecutorService` and `Future` to retrieve results, even with timeouts.
+
+Java offers a plethora of classes, methods, interfaces, and concepts for managing concurrency and multithreading. This overview provides a starting point for creating applications capable of handling multiple tasks simultaneously.
+
+# Singleton Design Pattern
+
+The singleton design pattern ensures a class has only one instance, providing a universal point of access to it. It's ideal for maintaining a shared state or resource across an application and is widely used, especially in frameworks like Spring Boot.
+
+**Scenarios and Benefits**:
+- **Use Cases**: Managing a single database connection, global logger, or centralizing application settings.
+- **Controlled Access**: Prevents multiple instances, ensuring consistency.
+- **Lazy Instantiation**: Instance created only when needed, saving memory.
+- **Efficient Resource Management**: Ensures optimal use of shared resources or states.
+
+In summary, the singleton pattern is perfect when a class should have only one instance.
+
+# Singleton Pattern Implementation
+
+Implementing the singleton design pattern involves two common approaches: eager initialization and lazy initialization.
+
+**Eager Initialization**:
+- Creates the singleton instance as soon as the class loads.
+- Suitable when the instance isn't too resource-heavy or will be used throughout the application's life.
+- Example: Final class with a private constructor and a static instance created right away.
+
+**Lazy Initialization**:
+- Delays instance creation until needed.
+- More efficient for resource-intensive singletons or those not always used.
+- Example: Constructor ensures instance is not null, and synchronization guarantees one thread creates the instance at a time. Double null check prevents simultaneous instance creation by two threads.
+
+These are the primary methods for implementing the singleton pattern, though other approaches exist. In a multi-threaded environment, non-synchronized `getInstance` methods may create multiple instances concurrently. A synchronized method can prevent this but might slow down highly concurrent environments.
+
+# Input and Output
+
+**Introduction to I/O in Java**:
+Input and output (I/O) in Java involve reading or writing data. Streams play a vital role, even in simple programs like "Hello World." For example, `System.out.println` uses an OutputStream to display text. Streams are commonly used for file operations and console input, representing a one-way flow of data.
+
+**Core Abstract Classes**:
+In the Java Streams API, two core abstract classes are used: InputStream and OutputStream. While you can't create instances of these directly, they have concrete implementations for handling different data types. For example, FileInputStream reads files, and ByteArrayInputStream reads bytes. Similarly, OutputStream implementations like FileOutputStream and ByteArrayOutputStream write files and byte arrays.
+
+**Reader and Writer**:
+There are also abstract classes called Reader and Writer, handling characters instead of bytes. InputStream and OutputStream deal with bytes, while Reader and Writer handle characters. Characters are more user-friendly, handling Unicode and character encoding. Concrete implementations are chosen based on the data type you're working with.
+
+# Reading from System
+
+Imagine you've built an app and want to gather user input from the console. You've got a class named `ScannerExample` with an empty `main` method, all set to go. Here's how to use it to ask for the user's name, age, and occupation.
+
+**Using Scanner**:
+1. Create a `Scanner` object and connect it to `System.in` to capture keyboard inputs.
+2. To prompt the user for their name, use `System.out.print` to keep the message on the same line. Use `scanner.nextLine()` to get what they type and store it in a variable like `name`.
+
+**Quick Test**:
+Print the `name` variable to ensure it's working. It should display what was typed.
+
+**Asking for Age**:
+1. Prompt the user for their age with a message like "Please enter your age."
+2. Use `scanner.nextInt()` to get the number and print it out with `System.out.println`.
+
+**Handling Occupation**:
+1. Add another prompt for their occupation.
+2. Use `scanner.nextLine()` to get the input and print it out.
+
+**Quirk Alert**:
+There's a quirk with `nextLine()` and `nextInt()`. `nextLine()` takes the whole line, including the line separator, while `nextInt()` grabs only the number, leaving the line separator behind. When you use `nextInt()` followed by `nextLine()` for occupation, it gets stuck on the line separator from age.
+
+**Solutions**:
+1. Switch `nextInt()` to `nextLine()` for age and convert the string to an integer.
+2. After `nextInt()`, add another `nextLine()` to jump past the line separator.
+
+**Try It Out**:
+Enter your name (e.g., "Sam"), age (e.g., "30"), and occupation (e.g., "teacher"). It should work smoothly. That's the `Scanner` in action for reading console input.
+
+### Reading Files
+
+Let's discuss reading input using a class called BufferedReader. Imagine you have a file named "example.txt" in a folder named "06_03," and you've got a class called "BufferedReaderExample" with an empty `main` method.
+
+**Using BufferedReader**:
+1. Start by creating a BufferedReader like this:
+
+```java
+BufferedReader reader = new BufferedReader(new FileReader("path/to/example.txt"));
+```
+
+You might encounter a compiler error due to a potential FileNotFoundException. Handle it with a try-catch block:
+
+```java
+try {
+    BufferedReader reader = new BufferedReader(new FileReader("path/to/example.txt"));
+    // Read the file here
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+**Reading Line by Line**:
+Use the `readLine()` method to read the file line by line. Handle any IOException like this:
+
+```java
+String line;
+while ((line = reader.readLine()) != null) {
+    // Process each line here
+}
+```
+
+**Getting Lines as a Single String**:
+To get all the lines as a single string with spaces between them, use a StringBuilder and the lines() method:
+
+```java
+StringBuilder builder = new StringBuilder();
+reader.lines().forEach(line -> builder.append(line).append(" "));
+String allLines = builder.toString().trim();
+```
+
+Running this code will give you the first line separately and the rest of the lines as one long string, with spaces between them. Note that the `lines()` method doesn't return the first line because `readLine()` already retrieved it.
+
+# Using Try-With-Resources
+
+In the previous section, we learned about reading files with a buffered reader. While it worked, there's an important aspect we overlooked: closing the reader. Leaving resources open can strain the operating system, potentially leading to issues like resource exhaustion.
+
+To address this, we typically add a "finally" block after the "try-catch" sections to ensure proper resource closure. However, in complex applications with multiple resource openings, it's easy to overlook this step. Fortunately, there's a simpler solution called "try-with-resources."
+
+With "try-with-resources," you declare the resource inside brackets after the "try" keyword. This means you move the resource initialization line inside the brackets. Running the app again yields the same output, but this small change can prevent memory leaks and make your application safer. So, whenever you create resources inside a "try" block, consider using "try-with-resources."
+
+# Working with Files
+
+Java provides file-handling capabilities through two main packages: `java.io` and `java.nio`. The `java.io` package includes the traditional `File` class, which can create files and list directory contents. While this class has been around for a long time and is unlikely to disappear, it does have some limitations.
+
+To address these limitations, the `java.nio` package introduces new classes like `Path`, `Paths`, and `Files`. These offer a modern API with improved error handling, making them generally preferable for file work. While I'll use the `java.nio` package in my examples, you might encounter the old `File` class in older code.
+
+The key players from `java.nio` are `Path` and `Paths`. A `Path` represents a file system path, and `Paths` provides a convenient `get` method to convert strings into `Path` objects. Additionally, there's the `Files` class (not to be confused with `java.io`'s `File` class), which offers static methods for tasks like copying, moving, and deleting files.
+
+# Creating a New File
+
+Dealing with files is a common task in software development. Let's start by learning how to create an empty file in Java. In this example, we have a class named "FileCreationExample" with an empty main method. To create the file, we'll use the `Path` class from the `java.nio` package.
+
+First, we declare a `Path` variable and set it using the `Paths.get` method, specifying the desired file's path. Make sure to import the `Path` and `Paths` classes from `java.nio.file`.
+
+This defines where the file should be, but it doesn't create it yet. To do that, we need to use another class called `Files`.
+
+We call the `Files.createFile` static method and pass in our path. However, you might encounter a compiler error because you need to handle an `IOException`. To deal with this, we wrap the file creation step in a try-catch block. If an `IOException` occurs, it is caught, and we print the stack trace to inform us.
+
+Running this code will create an empty file named "example.txt" in the specified folder. If you run it again when the file already exists, you will get a "file already exists" exception. To avoid this, you can check if the file exists before attempting to create it.
+
+You can use the `Files.notExists` method to determine if the file is already there and only create it if it is not. No need for an "else" block in this case. With this approach, running the code again won't throw an exception, and you'll still have your empty "example.txt" file.
+
+# Working with Directories
+
+Dealing with directories in Java can be quite convenient. Let's say we want to list the contents of a directory. We have a class called "DirectoriesExample" with a main method for this purpose. 
+
+To achieve this, we turn to the `Files` class, which offers a handy static method called `list`. This method returns a stream of path objects and requires a path object as an argument. We use the `Paths.get` method with a dot to represent the current directory. Then, we loop through the stream using the `forEach` method to print out each entry.
+
+However, there's a catch. The `list` method may throw an IOException, so we wrap it in a try-catch block. Upon running this, we'll see all the contents of the project, including files and directories. 
+
+Now, if we want only the file names, we can use the `filter` method from the stream's API before `forEach`. We add a condition to filter out directories, and voila, we get only the file names.
+
+Creating a new directory is straightforward. We use the `Files.createDirectory` method, specifying the path to the directory we want to create. For safety, we check if the directory already exists using `Files.notExists`. If it doesn't exist, we create the directory; there's no need for an "else" statement. Running this creates an empty directory where we want it.
+
+Even upon running it again, no exceptions are thrown, even if the directory exists. So, there you have it: listing and creating directories made easy.
+
+# Copying Files
+
+To copy files in Java, we have a directory structure with folders and files. Inside the "files" directory, we have "A" and "B" subdirectories. Within "A," there's a file named "example.txt" with the content "hello world."
+
+Now, in the "FileCopier" class with an empty main method, we'll set the source and destination paths using the "Paths.get" method. For instance, the source path would be "source/main/java/07/04/files/A/example.txt," and we'll change "A" to "B" for the destination.
+
+To copy the file, we use the "Files.copy" method, passing the source and destination paths. We wrap this in a try-catch block to handle potential "IOExceptions."
+
+When running this code, ensure the paths are correct. If the file already exists in the destination, add an "if" statement with "Files.notExists" to check before copying it.
+
+In short, this code demonstrates how to copy files in Java with proper error handling and checking for existing files in the destination directory.
+
+
+
+
 
 
 
